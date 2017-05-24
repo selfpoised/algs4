@@ -178,7 +178,25 @@ public class Graph {
         adj[v].add(w);
         adj[w].add(v);
     }
+    
+    /**
+     * test if v and w are connected.
+     *
+     * @param  v one vertex in the edge
+     * @param  w the other vertex in the edge
+     * @throws IllegalArgumentException unless both {@code 0 <= v < V} and {@code 0 <= w < V}
+     */
+    public boolean hasEdge(int v, int w) {
+        validateVertex(v);
+        validateVertex(w);
+        for(int k: adj(v)){
+            if(k == w){
+                return true;
+            }
+        }
 
+        return false;
+    }
 
     /**
      * Returns the vertices adjacent to vertex {@code v}.
