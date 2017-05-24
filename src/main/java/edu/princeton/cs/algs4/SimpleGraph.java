@@ -44,10 +44,8 @@ import java.util.NoSuchElementException;
  *  It supports the following two primary operations: add an edge to the graph,
  *  iterate over all of the vertices adjacent to a vertex. It also provides
  *  methods for returning the number of vertices <em>V</em> and the number
- *  of edges <em>E</em>. Parallel edges and self-loops are permitted.
- *  By convention, a self-loop <em>v</em>-<em>v</em> appears in the
- *  adjacency list of <em>v</em> twice and contributes two to the degree
- *  of <em>v</em>.
+ *  of edges <em>E</em>. Parallel edges and self-loops are not permitted.
+ *
  *  <p>
  *  This implementation uses an adjacency-lists representation, which 
  *  is a vertex-indexed array of {@link Bag} objects.
@@ -61,13 +59,13 @@ import java.util.NoSuchElementException;
  *  @author Robert Sedgewick
  *  @author Kevin Wayne
  */
-public class Graph {
+public class SimpleGraph {
     private static final String NEWLINE = System.getProperty("line.separator");
 
     private final int V;
     private int E;
     private Bag<Integer>[] adj;
-    
+
     /**
      * Initializes an empty graph with {@code V} vertices and 0 edges.
      * param V the number of vertices
@@ -75,7 +73,7 @@ public class Graph {
      * @param  V number of vertices
      * @throws IllegalArgumentException if {@code V < 0}
      */
-    public Graph(int V) {
+    public SimpleGraph(int V) {
         if (V < 0) throw new IllegalArgumentException("Number of vertices must be nonnegative");
         this.V = V;
         this.E = 0;
@@ -85,7 +83,7 @@ public class Graph {
         }
     }
 
-    /**  
+    /**
      * Initializes a graph from the specified input stream.
      * The format is the number of vertices <em>V</em>,
      * followed by the number of edges <em>E</em>,
@@ -96,7 +94,7 @@ public class Graph {
      * @throws IllegalArgumentException if the number of vertices or edges is negative
      * @throws IllegalArgumentException if the input stream is in the wrong format
      */
-    public Graph(In in) {
+    public SimpleGraph(In in) {
         try {
             this.V = in.readInt();
             if (V < 0) throw new IllegalArgumentException("number of vertices in a Graph must be nonnegative");
@@ -111,7 +109,7 @@ public class Graph {
                 int w = in.readInt();
                 validateVertex(v);
                 validateVertex(w);
-                addEdge(v, w); 
+                addEdge(v, w);
             }
         }
         catch (NoSuchElementException e) {
@@ -125,7 +123,7 @@ public class Graph {
      *
      * @param  G the graph to copy
      */
-    public Graph(Graph G) {
+    public SimpleGraph(SimpleGraph G) {
         this(G.V());
         this.E = G.E();
         for (int v = 0; v < G.V(); v++) {
@@ -174,6 +172,12 @@ public class Graph {
     public void addEdge(int v, int w) {
         validateVertex(v);
         validateVertex(w);
+        if(v == w){
+            throw new IllegalArgumentException("vertex " + v + " is equal to " + w + " ,self loop is not allowed");
+        }
+        if(hasEdge(v,w) && hasEdge(w,v)){
+            throw new IllegalArgumentException("parallel edges are not allowed");
+        }
         E++;
         adj[v].add(w);
         adj[w].add(v);
@@ -249,8 +253,8 @@ public class Graph {
      * @param args the command-line arguments
      */
     public static void main(String[] args) {
-        In in = new In(args[0]);
-        Graph G = new Graph(in);
+        In in = new In("data/algs4-data/tinyG.txt");
+        SimpleGraph G = new SimpleGraph(in);
         StdOut.println(G);
     }
 
