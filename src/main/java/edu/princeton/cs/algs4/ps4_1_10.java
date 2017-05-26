@@ -21,24 +21,11 @@
 package edu.princeton.cs.algs4;
 
 /**
- *  The {@code DepthFirstSearch} class represents a data type for 
- *  determining the vertices connected to a given source vertex <em>s</em>
- *  in an undirected graph. For versions that find the paths, see
- *  {@link DepthFirstPaths} and {@link BreadthFirstPaths}.
- *  <p>
- *  This implementation uses depth-first search.
- *  The constructor takes time proportional to <em>V</em> + <em>E</em>
- *  (in the worst case),
- *  where <em>V</em> is the number of vertices and <em>E</em> is the number of edges.
- *  It uses extra space (not including the graph) proportional to <em>V</em>.
- *  <p>
- *  For additional documentation, see <a href="http://algs4.cs.princeton.edu/41graph">Section 4.1</a>   
- *  of <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
- *
- *  @author Robert Sedgewick
- *  @author Kevin Wayne
+ * Prove  that  every  connected  graph  has  a  vertex  whose  removal  (including  all
+ * adjacent edges) will not disconnect the graph, and write a DFS method that finds such
+ * a vertex. Hint: Consider a vertex whose adjacent vertices are all marked
  */
-public class DepthFirstSearch {
+public class ps4_1_10 {
     private boolean[] marked;    // marked[v] = is there an s-v path?
     private int count;           // number of vertices connected to s
 
@@ -49,7 +36,7 @@ public class DepthFirstSearch {
      * @param s the source vertex
      * @throws IllegalArgumentException unless {@code 0 <= s < V}
      */
-    public DepthFirstSearch(Graph G, int s) {
+    public ps4_1_10(Graph G, int s) {
         marked = new boolean[G.V()];
         validateVertex(s);
         dfs(G, s);
@@ -59,6 +46,18 @@ public class DepthFirstSearch {
     private void dfs(Graph G, int v) {
         count++;
         marked[v] = true;
+
+        boolean allMarked = true;
+        for (int w : G.adj(v)) {
+            if (!marked[w]) {
+                allMarked = false;
+                break;
+            }
+        }
+        if(allMarked){
+            StdOut.println(v + " can be removed without hamper connectivity");
+        }
+
         for (int w : G.adj(v)) {
             if (!marked[w]) {
                 dfs(G, w);
@@ -98,10 +97,10 @@ public class DepthFirstSearch {
      * @param args the command-line arguments
      */
     public static void main(String[] args) {
-        In in = new In("data/algs4-data/tinyGex2.txt");
+        In in = new In("data/algs4-data/4.1.10.txt");
         Graph G = new Graph(in);
         int s = Integer.parseInt("0");
-        DepthFirstSearch search = new DepthFirstSearch(G, s);
+        ps4_1_10 search = new ps4_1_10(G, s);
         for (int v = 0; v < G.V(); v++) {
             if (search.marked(v))
                 StdOut.print(v + " ");

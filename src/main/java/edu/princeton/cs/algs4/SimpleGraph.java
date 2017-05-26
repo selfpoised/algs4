@@ -253,7 +253,7 @@ public class SimpleGraph {
      * @param args the command-line arguments
      */
     public static void main(String[] args) {
-        In in = new In("data/algs4-data/tinyG.txt");
+        In in = new In("data/algs4-data/tinyCG.txt");
         SimpleGraph G = new SimpleGraph(in);
         StdOut.println(G);
     }

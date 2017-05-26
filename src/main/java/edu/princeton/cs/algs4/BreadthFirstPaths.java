@@ -255,11 +255,11 @@ public class BreadthFirstPaths {
      * @param args the command-line arguments
      */
     public static void main(String[] args) {
-        In in = new In(args[0]);
+        In in = new In("data/algs4-data/4.1.16.txt");
         Graph G = new Graph(in);
         // StdOut.println(G);
 
-        int s = Integer.parseInt(args[1]);
+        int s = Integer.parseInt("0");
         BreadthFirstPaths bfs = new BreadthFirstPaths(G, s);
 
         for (int v = 0; v < G.V(); v++) {
